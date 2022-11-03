@@ -9,21 +9,22 @@ module damm.it.proyectoud1samuelmanuel {
     requires com.fasterxml.jackson.dataformat.csv;
 
     requires org.apache.logging.log4j;
+    requires java.sql;
 
-    exports damm.it.proyectoud1samuelmanuel;
-    opens damm.it.proyectoud1samuelmanuel to javafx.fxml;
+    exports damm.it.proyectoud2samuelmanuel;
+    opens damm.it.proyectoud2samuelmanuel to javafx.fxml;
 
-    exports damm.it.proyectoud1samuelmanuel.controllers;
-    opens damm.it.proyectoud1samuelmanuel.controllers to javafx.fxml;
+    exports damm.it.proyectoud2samuelmanuel.controllers;
+    opens damm.it.proyectoud2samuelmanuel.controllers to javafx.fxml;
 
-    exports damm.it.proyectoud1samuelmanuel.models;
-    opens damm.it.proyectoud1samuelmanuel.models to javafx.fxml;
+    exports damm.it.proyectoud2samuelmanuel.models;
+    opens damm.it.proyectoud2samuelmanuel.models to javafx.fxml;
 
-    exports damm.it.proyectoud1samuelmanuel.entities.apod;
-    opens damm.it.proyectoud1samuelmanuel.entities.apod to com.fasterxml.jackson.databind;
+    exports damm.it.proyectoud2samuelmanuel.entities.apod;
+    opens damm.it.proyectoud2samuelmanuel.entities.apod to com.fasterxml.jackson.databind;
 
-    exports damm.it.proyectoud1samuelmanuel.entities.noes;
-    opens damm.it.proyectoud1samuelmanuel.entities.noes to com.fasterxml.jackson.databind;
-    exports damm.it.proyectoud1samuelmanuel.daos;
-    opens damm.it.proyectoud1samuelmanuel.daos to javafx.fxml;
+    exports damm.it.proyectoud2samuelmanuel.entities.noes;
+    opens damm.it.proyectoud2samuelmanuel.entities.noes to com.fasterxml.jackson.databind;
+    exports damm.it.proyectoud2samuelmanuel.daos;
+    opens damm.it.proyectoud2samuelmanuel.daos to javafx.fxml;
 }

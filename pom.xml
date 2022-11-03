@@ -75,7 +75,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                damm.it.proyectoud1samuelmanuel/damm.it.proyectoud1samuelmanuel.Main
+                                damm.it.proyectoud1samuelmanuel/damm.it.proyectoud2samuelmanuel.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

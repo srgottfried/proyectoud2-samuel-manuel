@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.control.*?>
+<TableView xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="damm.it.proyectoud2samuelmanuel.controllers.MainController">
+     <columns>
+         <TableColumn prefWidth="176.99999487400055" text="Nombre">
+             <cellValueFactory>
+                 <PropertyValueFactory property="name" />
+             </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="152.3333282470703" text="Diámetro medio (m)">
+             <cellValueFactory>
+                 <PropertyValueFactory property="diameter" />
+             </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="236.99996948242188" text="Máxima aproximación a La Tierra (LD)">
+             <cellValueFactory>
+                 <PropertyValueFactory property="minDistance" />
+             </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="256.3333740234375" text="Velocidad en máxima aproximación (km/s)">
+             <cellValueFactory>
+                 <PropertyValueFactory property="speed" />
+             </cellValueFactory>
+         </TableColumn>
+         <TableColumn prefWidth="184.3333740234375" text="Potencialmente peligroso">
+             <cellValueFactory>
+                 <PropertyValueFactory property="hazardous" />
+             </cellValueFactory>
+         </TableColumn>
+     </columns>
+ </TableView>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<HBox styleClass="apod" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="damm.it.proyectoud2samuelmanuel.controllers.ApodController">
+   <children>
+      <AnchorPane fx:id="paneApod">
+         <children>
+            <ImageView fx:id="imgApod" fitHeight="600.0" fitWidth="683.0" onMouseClicked="#closePopup" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <image>
+                  <Image url="@../img/logo-nasa.png" />
+               </image></ImageView>
+            <HBox alignment="TOP_CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+               <children>
+                  <DatePicker fx:id="date" editable="false" prefWidth="120.0">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></DatePicker>
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#prevDay" styleClass="arrow-btn" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="20.0">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" rotate="180.0">
+                     <image>
+                        <Image url="@../img/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#nextDay" styleClass="arrow-btn" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="20.0">
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0">
+                     <image>
+                        <Image url="@../img/arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children></AnchorPane>
+      <AnchorPane onMouseClicked="#closePopup" styleClass="apod" HBox.hgrow="ALWAYS">
+         <children>
+            <ImageView fitHeight="30.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="20.0">
+               <image>
+                  <Image url="@../img/quotes.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblTitle" alignment="CENTER" text="Cargando imagen del dia..." textAlignment="CENTER" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="20.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font></Label>
+            <Label fx:id="lblQotd" alignment="CENTER" prefWidth="600.0" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="60.0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="lblCopyright" alignment="CENTER" layoutX="10.0" layoutY="30.0" textAlignment="CENTER" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="30.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="30.0">
+               <image>
+                  <Image url="@../img/quotes.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

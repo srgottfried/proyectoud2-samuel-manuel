@@ -1,0 +1,30 @@
+.apod {
+    -fx-background-image: url('../img/background-apod.jpg');
+    -fx-background-size: 100%;
+}
+
+.main {
+    -fx-background-image: url('../img/background.jpg');
+    -fx-background-size: 100%;
+}
+
+.login {
+    -fx-background-image: url('../img/login.jpg');
+    -fx-background-size: 100%;
+}
+
+.button {
+    -fx-background-color: #e2e2e2;
+    -fx-border-color: #a1a1a1;
+    -fx-border-width: 1px;
+    -fx-border-radius: 5px;
+}
+
+.arrow-btn {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.failed-txt {
+    -fx-background-color: #ff7474;
+}

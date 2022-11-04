@@ -1,4 +1,4 @@
-package damm.it.proyectoud2samuelmanuel.entities.noes;
+package damm.it.proyectoud2samuelmanuel.entities.neos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,8 +1,8 @@
-package damm.it.proyectoud2samuelmanuel.entities.noes;
+package damm.it.proyectoud2samuelmanuel.entities.neos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Meters {
+public class Feet {
 	@JsonProperty("estimated_diameter_max")
 	private double estimatedDiameterMax;
 

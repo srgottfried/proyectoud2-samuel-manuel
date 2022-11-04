@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public abstract class ConnectionManager {
-    private static Path defaultCredentialPath = Path.of("src/main/resources/damm/it/proyectoud2samuelmanuel");
+    private static Path defaultCredentialPath = Path.of("src/main/resources/damm/it/proyectoud2samuelmanuel/db/credentials");
 
     public static Path getDefaultCredentialPath() {
         return defaultCredentialPath;
@@ -36,5 +36,6 @@ public abstract class ConnectionManager {
         }
         return null;
     }
+
 }
 

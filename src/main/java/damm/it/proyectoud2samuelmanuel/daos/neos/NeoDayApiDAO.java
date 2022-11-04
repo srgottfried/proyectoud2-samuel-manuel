@@ -2,7 +2,7 @@ package damm.it.proyectoud2samuelmanuel.daos.neos;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import damm.it.proyectoud2samuelmanuel.entities.noes.NeoEntity;
+import damm.it.proyectoud2samuelmanuel.entities.neos.NeoEntity;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
 import damm.it.proyectoud2samuelmanuel.models.NeoDay;
 import damm.it.proyectoud2samuelmanuel.services.UserService;

@@ -23,8 +23,8 @@ module damm.it.proyectoud1samuelmanuel {
     exports damm.it.proyectoud2samuelmanuel.entities.apod;
     opens damm.it.proyectoud2samuelmanuel.entities.apod to com.fasterxml.jackson.databind;
 
-    exports damm.it.proyectoud2samuelmanuel.entities.noes;
-    opens damm.it.proyectoud2samuelmanuel.entities.noes to com.fasterxml.jackson.databind;
+    exports damm.it.proyectoud2samuelmanuel.entities.neos;
+    opens damm.it.proyectoud2samuelmanuel.entities.neos to com.fasterxml.jackson.databind;
     exports damm.it.proyectoud2samuelmanuel.daos;
     opens damm.it.proyectoud2samuelmanuel.daos to javafx.fxml;
 }

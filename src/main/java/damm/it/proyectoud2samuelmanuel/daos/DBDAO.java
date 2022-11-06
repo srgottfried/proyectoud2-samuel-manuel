@@ -10,5 +10,9 @@ public interface DBDAO<T> extends DAO {
 
     void update(T t);
 
+    void update(int i, T t);
+
     void delete(T t);
+
+    void delete(int i);
 }

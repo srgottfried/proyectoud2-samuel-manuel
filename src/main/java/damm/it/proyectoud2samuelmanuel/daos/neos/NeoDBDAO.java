@@ -7,10 +7,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeoDAO implements DBDAO<Neo> {
-    private Connection connection;
+public class NeoDBDAO implements DBDAO<Neo> {
+    private final Connection connection;
 
-    public NeoDAO(Connection connection) {
+    public NeoDBDAO(Connection connection) {
         this.connection = connection;
     }
 
@@ -92,7 +92,7 @@ public class NeoDAO implements DBDAO<Neo> {
         }
     }
 
-    public void update(Neo neo, int id) {
+    public void update(int id, Neo neo) {
         String query = """
                 update neos
                 set             name = ?, 
@@ -121,6 +121,30 @@ public class NeoDAO implements DBDAO<Neo> {
 
     @Override
     public void delete(Neo neo) {
+        String query = """
+                delete from neos
+                where id = ?
+                """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, neo.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar registro de la base de datos");
+            e.printStackTrace();
+        }
+    }
 
+    public void delete(int id) {
+        String query = """
+                delete from neos
+                where id = ?
+                """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar registro de la base de datos");
+            e.printStackTrace();
+        }
     }
 }

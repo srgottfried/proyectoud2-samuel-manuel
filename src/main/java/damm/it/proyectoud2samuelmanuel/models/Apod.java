@@ -7,6 +7,7 @@ public class Apod implements Serializable {
     @Serial
     private static final long serialVersionUID = 1;
 
+    private int id;
     private String date;
     private String url;
     private String title;
@@ -19,6 +20,23 @@ public class Apod implements Serializable {
         this.title = title;
         this.explanation = explanation;
         this.copyright = copyright;
+    }
+
+    public Apod(int id, String date, String url, String title, String explanation, String copyright) {
+        this.id = id;
+        this.date = date;
+        this.url = url;
+        this.title = title;
+        this.explanation = explanation;
+        this.copyright = copyright;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDate() {
@@ -59,5 +77,17 @@ public class Apod implements Serializable {
 
     public void setCopyright(String copyright) {
         this.copyright = copyright;
+    }
+
+    @Override
+    public String toString() {
+        return "Apod{" +
+                "id=" + id +
+                ", date='" + date + '\'' +
+                ", url='" + url + '\'' +
+                ", title='" + title + '\'' +
+                ", explanation='" + explanation + '\'' +
+                ", copyright='" + copyright + '\'' +
+                '}';
     }
 }

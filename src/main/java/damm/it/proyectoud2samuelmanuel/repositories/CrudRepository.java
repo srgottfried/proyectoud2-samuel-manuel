@@ -2,7 +2,7 @@ package damm.it.proyectoud2samuelmanuel.repositories;
 
 import java.util.NoSuchElementException;
 
-public interface CrudRepository<T, I> extends Repository<T, I> {
+public interface CrudRepository<T, I> extends Repository {
     T get(I id) throws NoSuchElementException;
     void add(T obj);
     void update(T obj);

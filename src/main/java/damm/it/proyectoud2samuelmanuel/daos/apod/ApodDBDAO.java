@@ -1,18 +1,26 @@
 package damm.it.proyectoud2samuelmanuel.daos.apod;
 
-import damm.it.proyectoud2samuelmanuel.daos.DBDAO;
+import damm.it.proyectoud2samuelmanuel.daos.CrudDAO;
+import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
 import damm.it.proyectoud2samuelmanuel.models.Apod;
-import damm.it.proyectoud2samuelmanuel.models.Neo;
+import damm.it.proyectoud2samuelmanuel.models.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApodDBDAO implements DBDAO<Apod> {
+public class ApodDBDAO implements CrudDAO<Apod> {
+    private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
     public ApodDBDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    public ApodDBDAO() {
+        this.connection = ConnectionManager.getConnection("nasa");
     }
 
     @Override
@@ -128,17 +136,17 @@ public class ApodDBDAO implements DBDAO<Apod> {
         }
     }
 
-    public void delete(int id) {
-        String query = """
-                delete from apods
-                where id = ?
-                """;
+    @Override
+    public boolean exists(Apod apod) {
+        String query = "select count(*) from apods where id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(1, apod.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id") != 0;
         } catch (SQLException e) {
-            System.out.println("Error al eliminar registro de la base de datos");
-            e.printStackTrace();
+            logger.error("Error al comprobar la existencia de registro: {}", e.getMessage());
         }
+        return false;
     }
 }

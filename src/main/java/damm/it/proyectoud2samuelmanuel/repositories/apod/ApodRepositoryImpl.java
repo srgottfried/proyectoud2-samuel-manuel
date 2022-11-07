@@ -1,5 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.repositories.apod;
 
+import damm.it.proyectoud2samuelmanuel.daos.CrudDAO;
 import damm.it.proyectoud2samuelmanuel.daos.apod.ApodApiDAO;
 import damm.it.proyectoud2samuelmanuel.daos.apod.ApodCacheDAO;
 import damm.it.proyectoud2samuelmanuel.models.Apod;
@@ -20,8 +21,7 @@ public class ApodRepositoryImpl implements ApodRepository {
      * Constructor del repositorio.
      */
     public ApodRepositoryImpl() {
-        apiDao = new ApodApiDAO();
-        cacheDao = new ApodCacheDAO();
+
     }
 
     /**

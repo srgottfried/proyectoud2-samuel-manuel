@@ -1,18 +1,25 @@
 package damm.it.proyectoud2samuelmanuel.daos.users;
 
-import damm.it.proyectoud2samuelmanuel.daos.DBDAO;
-import damm.it.proyectoud2samuelmanuel.models.Neo;
+import damm.it.proyectoud2samuelmanuel.daos.CrudDAO;
+import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
 import damm.it.proyectoud2samuelmanuel.models.User;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDBDAO implements DBDAO<User> {
+public class UserDBDAO implements CrudDAO<User> {
+    private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
     public UserDBDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    public UserDBDAO() {
+        this.connection = ConnectionManager.getConnection("login_nasa");
     }
 
     @Override
@@ -28,8 +35,7 @@ public class UserDBDAO implements DBDAO<User> {
             preparedStatement.setString(3, user.getApiKey());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al realizar la inserción de datos");
-            e.printStackTrace();
+            logger.error("Error al realizar la inserción de datos: {}", e.getMessage());
         }
     }
 
@@ -52,8 +58,7 @@ public class UserDBDAO implements DBDAO<User> {
             }
             return users;
         } catch (SQLException e) {
-            System.out.println("Error al realizar la lectura sobre la base de datos.");
-            e.printStackTrace();
+            logger.error("Error al realizar la lectura sobre la base de datos: {}", e.getMessage());
         }
         return null;
     }
@@ -75,29 +80,7 @@ public class UserDBDAO implements DBDAO<User> {
             preparedStatement.setInt(4, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al actualizar la base de datos");
-            e.printStackTrace();
-        }
-    }
-
-    public void update(int id, User user) {
-        String query = """
-                update users
-                set             username = ?, 
-                                password = ?, 
-                                api_key = ?
-                where id = ?
-                """;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, user.getName());
-            preparedStatement.setString(2, user.getPassword());
-            preparedStatement.setString(3, user.getApiKey());
-            preparedStatement.setInt(4, id);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error al actualizar la base de datos");
-            e.printStackTrace();
+            logger.error("Error al actualizar la base de datos: {}", e.getMessage());
         }
     }
 
@@ -111,22 +94,23 @@ public class UserDBDAO implements DBDAO<User> {
             preparedStatement.setInt(1, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println("Error al eliminar registro de la base de datos");
-            e.printStackTrace();
+            logger.error("Error al eliminar registro de la base de datos: {}", e.getMessage());
         }
     }
 
-    public void delete(int id) {
-        String query = """
-                delete from users
-                where id = ?
-                """;
+    @Override
+    public boolean exists(User user) {
+        String query = "select count(*) from users where id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(1, user.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id") != 0;
         } catch (SQLException e) {
-            System.out.println("Error al eliminar registro de la base de datos");
-            e.printStackTrace();
+            logger.error("Error al comprobar la existencia de registro: {}", e.getMessage());
         }
+        return false;
     }
+
+
 }

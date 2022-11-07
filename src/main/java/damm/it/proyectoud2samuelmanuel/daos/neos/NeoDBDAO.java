@@ -1,17 +1,26 @@
 package damm.it.proyectoud2samuelmanuel.daos.neos;
 
-import damm.it.proyectoud2samuelmanuel.daos.DBDAO;
+import damm.it.proyectoud2samuelmanuel.daos.CrudDAO;
+import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
+import damm.it.proyectoud2samuelmanuel.models.Apod;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NeoDBDAO implements DBDAO<Neo> {
+public class NeoDBDAO implements CrudDAO<Neo> {
+    private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
     public NeoDBDAO(Connection connection) {
         this.connection = connection;
+    }
+
+    public NeoDBDAO() {
+        this.connection = ConnectionManager.getConnection("nasa");
     }
 
     @Override
@@ -147,4 +156,19 @@ public class NeoDBDAO implements DBDAO<Neo> {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public boolean exists(Neo neo) {
+        String query = "select count(*) from apods where id = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, neo.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id") != 0;
+        } catch (SQLException e) {
+            logger.error("Error al comprobar la existencia de registro: {}", e.getMessage());
+        }
+        return false;
+    }
+
 }

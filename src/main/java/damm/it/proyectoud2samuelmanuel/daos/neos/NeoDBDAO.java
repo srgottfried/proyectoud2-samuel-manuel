@@ -28,16 +28,15 @@ public class NeoDBDAO implements CrudDAO<Neo> {
         String query = """
                 insert into neos 
                 (name, diameter, min_distance, speed, hazarous, date) 
-                values (?,?,?,?,?,?,?)
+                values (?,?,?,?,?,?)
                 """;
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, neo.getName());
             preparedStatement.setDouble(2, neo.getDiameter());
-            preparedStatement.setDouble(3, neo.getDiameter());
-            preparedStatement.setDouble(4, neo.getMinDistance());
-            preparedStatement.setDouble(5, neo.getSpeed());
-            preparedStatement.setBoolean(6, neo.isHazardous());
-            preparedStatement.setDate(7, Date.valueOf(neo.getDate()));
+            preparedStatement.setDouble(3, neo.getMinDistance());
+            preparedStatement.setDouble(4, neo.getSpeed());
+            preparedStatement.setBoolean(5, neo.isHazardous());
+            preparedStatement.setDate(6, Date.valueOf(neo.getDate()));
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al realizar la inserción de datos");

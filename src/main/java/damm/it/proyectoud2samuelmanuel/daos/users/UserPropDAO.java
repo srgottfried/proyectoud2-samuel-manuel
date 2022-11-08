@@ -12,10 +12,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-public class UserPropDAO implements UserDAO {
+public class UserPropDAO {
     private static final Logger logger = LogManager.getLogger();
 
-    @Override
     public User read(String loginData) {
         String[] encryptUsers;
 

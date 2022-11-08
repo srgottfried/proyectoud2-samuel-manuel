@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 public class RequestCacheDAO implements RequestDAO {
     private static final Logger logger = LogManager.getLogger();
@@ -25,6 +26,11 @@ public class RequestCacheDAO implements RequestDAO {
         } catch (IOException e) {
             logger.error("Error al guardar en caché los datos de la última petición del usuario {}: {}", request.getUser(), e.getMessage());
         }
+    }
+
+    @Override
+    public List<Request> read() {
+        return null;
     }
 
     @Override
@@ -47,6 +53,16 @@ public class RequestCacheDAO implements RequestDAO {
     @Override
     public void update(Request request) {
         create(request);
+    }
+
+    @Override
+    public void delete(Request request) {
+
+    }
+
+    @Override
+    public boolean exists(Request request) {
+        return false;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.repositories.users;
 
-import damm.it.proyectoud2samuelmanuel.daos.users.UserDAO;
-import damm.it.proyectoud2samuelmanuel.daos.users.UserPropDAO;
+import damm.it.proyectoud2samuelmanuel.daos.users.UserDBDAO;
 import damm.it.proyectoud2samuelmanuel.models.User;
 
 import java.util.NoSuchElementException;
@@ -10,13 +9,13 @@ import java.util.NoSuchElementException;
  * Repositorio para los usuarios.
  */
 public class UserRepositoryImpl implements UserRepository {
-    private final UserDAO userDAO;
+    private final UserDBDAO userDBDAO;
 
     /**
      * Constructor del repositorio.
      */
     public UserRepositoryImpl() {
-        userDAO = new UserPropDAO();
+        userDBDAO = new UserDBDAO();
     }
 
     /**
@@ -29,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User get(String loginData) throws NoSuchElementException {
         User user;
-        if ((user = userDAO.read(loginData)) != null)
+        if ((user = userDBDAO.read(loginData)) != null)
             return user;
 
         throw new NoSuchElementException("No existe ese usuario.");

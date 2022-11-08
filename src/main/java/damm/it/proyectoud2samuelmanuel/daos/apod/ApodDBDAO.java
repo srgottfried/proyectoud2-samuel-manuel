@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ApodDBDAO implements CrudDAO<Apod> {
+public class ApodDBDAO implements ApodDAO {
     private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
@@ -63,6 +63,33 @@ public class ApodDBDAO implements CrudDAO<Apod> {
                 }
             }
             return apods;
+        } catch (SQLException e) {
+            System.out.println("Error al realizar la lectura sobre la base de datos.");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public Apod read(String dateString) {
+        String query = """
+                select * from apods
+                where date = ? 
+                """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDate(1, Date.valueOf(dateString));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                return new Apod(
+                        resultSet.getInt("id"),
+                        resultSet.getDate("date").toString(),
+                        resultSet.getString("url"),
+                        resultSet.getString("title"),
+                        resultSet.getString("explanation"),
+                        resultSet.getString("copyright")
+                );
+            }
+
         } catch (SQLException e) {
             System.out.println("Error al realizar la lectura sobre la base de datos.");
             e.printStackTrace();
@@ -136,11 +163,40 @@ public class ApodDBDAO implements CrudDAO<Apod> {
         }
     }
 
+
+    public void delete(String dateString) {
+        String query = """
+                delete from apods
+                where date = ?
+                """;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDate(1, Date.valueOf(dateString));
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar registro de la base de datos");
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public boolean exists(Apod apod) {
         String query = "select count(*) from apods where id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, apod.getId());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id") != 0;
+        } catch (SQLException e) {
+            logger.error("Error al comprobar la existencia de registro: {}", e.getMessage());
+        }
+        return false;
+    }
+
+
+    public boolean exists(String dateString) {
+        String query = "select count(*) from apods where date = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setDate(1, Date.valueOf(dateString));
             ResultSet resultSet = preparedStatement.executeQuery();
             resultSet.next();
             return resultSet.getInt("id") != 0;

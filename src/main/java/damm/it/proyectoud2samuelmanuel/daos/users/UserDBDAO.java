@@ -63,6 +63,39 @@ public class UserDBDAO implements CrudDAO<User> {
         return null;
     }
 
+
+    public User read(String dateString) {
+        String query = """
+                select * 
+                from users
+                where username = ?
+                """;
+        ResultSet resultSet = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, dateString.split(":")[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    return (new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("api_key")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error al realizar la lectura sobre la base de datos: {}", e.getMessage());
+        } finally {
+            try {
+                resultSet.close();
+            } catch (SQLException e) {
+                logger.error("Error al cerar el statement: {}", e.getMessage());
+            }
+        }
+        return null;
+    }
+
     @Override
     public void update(User user) {
         String query = """

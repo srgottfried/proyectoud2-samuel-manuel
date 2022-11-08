@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class NeoDayExtDAO implements NeoDayDAO {
+public class NeoDayExtDAO {
     private static final Logger logger = LogManager.getLogger();
 
     public void writeJson(NeoDay neoDay, File outfile) {

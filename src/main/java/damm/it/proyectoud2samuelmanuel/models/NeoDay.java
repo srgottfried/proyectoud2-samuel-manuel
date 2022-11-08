@@ -9,11 +9,16 @@ public class NeoDay implements Serializable {
     @Serial
     private static final long serialVersionUID = 1;
 
-    private final List<Neo> neos;
-    private final String date;
+    private List<Neo> neos;
+    private String date;
 
     public NeoDay(String date) {
         neos = new LinkedList<>();
+        this.date = date;
+    }
+
+    public NeoDay(String date, List neos) {
+        this.neos = neos;
         this.date = date;
     }
 
@@ -23,5 +28,13 @@ public class NeoDay implements Serializable {
 
     public String getDate() {
         return date;
+    }
+
+    public void setNeos(List<Neo> neos) {
+        this.neos = neos;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

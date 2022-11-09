@@ -1,8 +1,10 @@
 package damm.it.proyectoud2samuelmanuel.daos;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import damm.it.proyectoud2samuelmanuel.services.SqlService;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
 import damm.it.proyectoud2samuelmanuel.models.NeoDay;
@@ -89,7 +91,8 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     }
 
     public void saveJson(NeoDay neoDay, File outfile) {
-        ObjectMapper mapper =  new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JSR310Module());
 
         try {
             mapper.writeValue(outfile, neoDay);
@@ -102,6 +105,7 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
         CsvMapper mapper =  new CsvMapper();
         CsvSchema schema = mapper.schemaFor(Neo.class);
         StringBuilder csv = new StringBuilder(schema.getColumnDesc().replaceAll("[\\[\\]\"]", "")).append("\n");
+        mapper.registerModule(new JSR310Module());
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(outfile))) {
             for (Neo neo : neoDay.getNeos())

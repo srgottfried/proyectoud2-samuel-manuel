@@ -19,7 +19,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
@@ -56,7 +55,8 @@ public class ApodController extends Controller implements Initializable {
         apodDAO = new ApodDAO();
 
         try {
-            date.setValue(apodDAO.getLastDate());
+            lastAvailableDate = apodDAO.getLastDate();
+            date.setValue(lastAvailableDate);
         } catch (NoSuchElementException e) {
             logger.error("No hay ninguna imagen del dia en la base de datos.");
         }

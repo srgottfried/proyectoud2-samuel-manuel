@@ -1,6 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.daos;
 
-import damm.it.proyectoud2samuelmanuel.services.ConnectionService;
+import damm.it.proyectoud2samuelmanuel.services.SqlService;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,12 +16,8 @@ public class NeoDAO implements DAO<Neo, Integer> {
     private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
-    public NeoDAO(Connection connection) {
-        this.connection = connection;
-    }
-
     public NeoDAO() {
-        this.connection = ConnectionService.getConnection("nasa");
+        this.connection = SqlService.getConnectionNasa();
     }
 
     @Override

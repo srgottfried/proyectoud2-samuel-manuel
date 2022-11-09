@@ -49,37 +49,16 @@ siguiente colección de consultas en Postman:
   - `RequestDAO`: Conjunto de DAOs para las peticiones anteriores.
   - `UserDAO`: Conjunto de DAOs para los usuarios.
   - `DAO`: _**(Interfaz)**_ Tipo común para los DAO.
-- **entities**
-  - **apod**
-    - `ApodEntity`: Objeto JSon de imagen del dia leído desde la api.
-  - **neos**
-    - `CloseApproachDataItem`
-    - `EstimatedDiameter`
-    - `Feet`
-    - `Kilometers`
-    - `Links`
-    - `Meters`
-    - `Miles`
-    - `MissDistance`
-    - `NeoEntity`: Objeto JSon de asteroides leído desde la api.
-    - `RelativeVelocity`
 - **models**
   - `Apod`: Modelo para una imagen del dia.
   - `Neo`: Modelo para un asteroide.
   - `NeoDay`: Modelo para los datos de asteroides para un determinado dia.
   - `Request`: Modelo para las peticiones.
   - `User`: Modelo para los usuarios.
-- **repositories**
-  - `ApodRepository`: Repositorio para las imágenes del dia.
-  - `NeoDayRepository`: Repositorio para los datos de asteroides.
-  - `RequestRepository`: Repositorio para las peticiones anteriores.
-  - `UserRepository`: Repositorio para los usuarios.
-  - `CrudRepository`: _**(Interfaz)**_ Especialización del repositorio que declara métodos CRUD.
-  - `ReadRepository` _**(Interfaz)**_ Especialización del repositorio que solo declara método Read.
-  - `Repository`: _**(Interfaz)**_ Tipo común para los repositorios.
 - **services**
   - `CypherService`: Gestiona el desencriptado de los datos de usuario.
   - `UserService`: Gestiona la autentificación y la sesión activa.
+  - `SqlService`: Gestiona las conexiones a MySql.
 - `Laucher`: Launcher requerido para el empaquetado en JAR.
 - `Main`: Clase principal de la aplicación.
 - `View`: Enumerando dónde se definen los datos de las vistas de las que consta la aplicación.
@@ -90,7 +69,6 @@ siguiente colección de consultas en Postman:
 - `Log4J`: El registro de errores se realiza mediante la dependencia Log4J, bien conocida en el entorno de Java.
 - `Jackson`: Una librería para la el procesado de archivos JSon, con soporte para XML y CSV.
 - `MVC`: Se ha respetado el Modelo Vista Controlador, manteniendo la lógica de la aplicación separada, tanto de las vistas como de la gestión de los datos.
-- `Repository Pattern`: Se ha respetado en la medida de lo posible el patrón de repositorio, separando la lógica de acceso a datos de la lógica de negocio.
 
 ## Gestión de datos de usuario
 

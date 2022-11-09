@@ -1,6 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.daos;
 
-import damm.it.proyectoud2samuelmanuel.services.ConnectionService;
+import damm.it.proyectoud2samuelmanuel.services.SqlService;
 import damm.it.proyectoud2samuelmanuel.models.Apod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,12 +14,8 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
     private final static Logger logger = LogManager.getLogger();
     private final Connection connection;
 
-    public ApodDAO(Connection connection) {
-        this.connection = connection;
-    }
-
     public ApodDAO() {
-        this.connection = ConnectionService.getConnection("nasa");
+        this.connection = SqlService.getConnectionNasa();
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
-public class CypherService {
+public abstract class CypherService {
     private static final Logger logger = LogManager.getLogger();
 
     private static final String ENCRYPT_ALGO = "AES/GCM/NoPadding";

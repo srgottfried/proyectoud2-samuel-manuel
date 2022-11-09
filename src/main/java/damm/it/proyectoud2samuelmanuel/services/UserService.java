@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 /**
  * Clase para gestionar a los usuarios. Almacena al usuario activo y realiza el login y logout.
  */
-public class UserService {
+public abstract class UserService {
     private static User activeUser = null;
     private static final UserDAO userDAO = new UserDAO();
 

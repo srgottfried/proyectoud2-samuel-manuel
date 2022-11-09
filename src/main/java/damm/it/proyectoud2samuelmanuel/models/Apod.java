@@ -1,31 +1,27 @@
 package damm.it.proyectoud2samuelmanuel.models;
 
-import java.io.Serial;
-import java.io.Serializable;
+import java.io.InputStream;
 
-public class Apod implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1;
-
+public class Apod {
     private int id;
     private String date;
-    private String url;
+    private InputStream img;
     private String title;
     private String explanation;
     private String copyright;
 
-    public Apod(String date, String url, String title, String explanation, String copyright) {
+    public Apod(String date, InputStream img, String title, String explanation, String copyright) {
         this.date = date;
-        this.url = url;
+        this.img = img;
         this.title = title;
         this.explanation = explanation;
         this.copyright = copyright;
     }
 
-    public Apod(int id, String date, String url, String title, String explanation, String copyright) {
+    public Apod(int id, String date, InputStream img, String title, String explanation, String copyright) {
         this.id = id;
         this.date = date;
-        this.url = url;
+        this.img = img;
         this.title = title;
         this.explanation = explanation;
         this.copyright = copyright;
@@ -47,12 +43,12 @@ public class Apod implements Serializable {
         this.date = date;
     }
 
-    public String getUrl() {
-        return url;
+    public InputStream getImg() {
+        return img;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImg(InputStream img) {
+        this.img = img;
     }
 
     public String getTitle() {
@@ -84,7 +80,7 @@ public class Apod implements Serializable {
         return "Apod{" +
                 "id=" + id +
                 ", date='" + date + '\'' +
-                ", url='" + url + '\'' +
+                ", url='" + img + '\'' +
                 ", title='" + title + '\'' +
                 ", explanation='" + explanation + '\'' +
                 ", copyright='" + copyright + '\'' +

@@ -5,33 +5,24 @@ package damm.it.proyectoud2samuelmanuel.models;
  */
 public class User {
     private int id;
-    private final String name;
-    private String password;
-    private final String apiKey;
+    private String name;
+    private String dbKey;
+
+    public User(String name, String dbKey) {
+        this.name = name;
+        this.dbKey = dbKey;
+    }
 
     /**
      * Constructor del usuario.
      *
      * @param name Nombre del usuario
-     * @param apiKey Clave de api del usuario
+     * @param dbKey Clave de api del usuario
      */
-    public User(String name, String apiKey) {
-        this.name = name;
-        this.apiKey = apiKey;
-    }
-
-
-    public User(String name, String password, String apiKey) {
-        this.name = name;
-        this.password = password;
-        this.apiKey = apiKey;
-    }
-
-    public User(int id, String name, String password, String apiKey) {
+    public User(int id, String name, String dbKey) {
         this.id = id;
         this.name = name;
-        this.password = password;
-        this.apiKey = apiKey;
+        this.dbKey = dbKey;
     }
 
     public int getId() {
@@ -42,17 +33,17 @@ public class User {
         this.id = id;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     /**
      * Método para obtener la clave de api del usuario.
      *
      * @return La clave de api del usuario
      */
-    public String getApiKey() {
-        return apiKey;
+    public String getDbKey() {
+        return dbKey;
+    }
+
+    public void setDbKey(String dbKey) {
+        this.dbKey = dbKey;
     }
 
     /**
@@ -64,7 +55,7 @@ public class User {
         return name;
     }
 
-    public String getPassword() {
-        return password;
+    public void setName(String name) {
+        this.name = name;
     }
 }

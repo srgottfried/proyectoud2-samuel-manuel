@@ -13,6 +13,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
@@ -26,7 +28,7 @@ public class CypherService {
     private static final int SALT_LENGTH_BYTE = 16;
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
-    public static String decryptUsers(String data, String password) {
+    public static String decryptUser(String data, String password) {
         try {
             byte[] decode = Base64.getDecoder().decode(data.getBytes(UTF_8));
             ByteBuffer bb = ByteBuffer.wrap(decode);
@@ -57,5 +59,28 @@ public class CypherService {
             logger.error("No se pudo desencriptar los datos de los usuarios: {}", e.getMessage());
             return null;
         }
+    }
+
+    public static String hash(String text) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(text.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder hexString = new StringBuilder(2 * hash.length);
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+
+                hexString.append(hex);
+            }
+
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            logger.error("No se pudo hashear el texto: {}", e.getMessage());
+        }
+
+        return "";
     }
 }

@@ -9,6 +9,7 @@ module damm.it.proyectoud1samuelmanuel {
     requires com.fasterxml.jackson.dataformat.csv;
 
     requires org.apache.logging.log4j;
+
     requires java.sql;
 
     exports damm.it.proyectoud2samuelmanuel;
@@ -20,11 +21,6 @@ module damm.it.proyectoud1samuelmanuel {
     exports damm.it.proyectoud2samuelmanuel.models;
     opens damm.it.proyectoud2samuelmanuel.models to javafx.fxml;
 
-    exports damm.it.proyectoud2samuelmanuel.entities.apod;
-    opens damm.it.proyectoud2samuelmanuel.entities.apod to com.fasterxml.jackson.databind;
-
-    exports damm.it.proyectoud2samuelmanuel.entities.neos;
-    opens damm.it.proyectoud2samuelmanuel.entities.neos to com.fasterxml.jackson.databind;
     exports damm.it.proyectoud2samuelmanuel.daos;
     opens damm.it.proyectoud2samuelmanuel.daos to javafx.fxml;
 }

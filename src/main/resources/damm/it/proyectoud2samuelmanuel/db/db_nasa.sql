@@ -1,7 +1,8 @@
 create database if not exists nasa;
 use nasa;
 
-create table if not exists neos
+drop table neos;
+create table neos
 (
     id           int          not null auto_increment,
     name         varchar(255) not null,
@@ -9,19 +10,22 @@ create table if not exists neos
     min_distance double       not null,
     speed        double       not null,
     hazarous     boolean      not null,
-    date         datetime     not null,
+    date         date         not null,
 
-    primary key (id)
+    primary key (id),
+    key (date)
 ) engine innodb;
 
-create table if not exists apods
+drop table apods;
+create table apods
 (
     id          int          not null auto_increment,
-    date        datetime     not null,
-    url         text         not null,
+    date        date         not null,
+    img         mediumblob   null,
     title       varchar(255) not null,
     explanation text         not null,
     copyright   varchar(255) not null,
 
-    primary key (id)
+    primary key (id),
+    unique key (date)
 ) engine innodb;

@@ -1,8 +1,7 @@
 package damm.it.proyectoud2samuelmanuel.controllers;
 
+import damm.it.proyectoud2samuelmanuel.daos.ApodDAO;
 import damm.it.proyectoud2samuelmanuel.models.Apod;
-import damm.it.proyectoud2samuelmanuel.repositories.apod.ApodRepository;
-import damm.it.proyectoud2samuelmanuel.repositories.apod.ApodRepositoryImpl;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -43,7 +43,7 @@ public class ApodController extends Controller implements Initializable {
     private AnchorPane paneApod;
     private LocalDate lastAvailableDate;
     private LocalDate lastDate;
-    private ApodRepository apodRepository;
+    private ApodDAO apodDAO;
 
     /**
      * Método llamado al cargarse la vista. Todavía no tiene ni Stage ni Scene asignadas.
@@ -53,7 +53,8 @@ public class ApodController extends Controller implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        apodRepository = new ApodRepositoryImpl();
+        apodDAO = new ApodDAO();
+        date.setValue(LocalDate.now(ZoneOffset.UTC));
         updateQotd();
     }
 
@@ -113,7 +114,7 @@ public class ApodController extends Controller implements Initializable {
         Task<Apod> task = new Task<>() {
             @Override
             protected Apod call() {
-                return apodRepository.get(date.getValue());
+                return apodDAO.get(date.getValue());
             }
         };
 
@@ -133,7 +134,7 @@ public class ApodController extends Controller implements Initializable {
                 });
             }
 
-            Image img = new Image(apod.getUrl());
+            Image img = new Image(apod.getImg());
 
             imgApod.setImage(img);
             imgApod.setPreserveRatio(true);
@@ -153,7 +154,8 @@ public class ApodController extends Controller implements Initializable {
         });
 
         task.setOnFailed(event -> {
-            date.setValue(lastDate);
+            if (date.getValue() != null &&  !date.getValue().equals(lastDate))
+                date.setValue(lastDate);
             logger.error("Ha fallado la obtención del APOD: {}", task.getException().getMessage());
         });
 

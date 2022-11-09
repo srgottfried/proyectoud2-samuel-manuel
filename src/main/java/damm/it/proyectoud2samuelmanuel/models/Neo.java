@@ -4,10 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Neo implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1;
-
+public class Neo {
     private int id;
     private String name;
     private double diameter;
@@ -15,14 +12,6 @@ public class Neo implements Serializable {
     private double speed;
     private boolean hazardous;
     private LocalDate date;
-
-    public Neo(String name, double diameter, double minDistance, double speed, boolean hazardous) {
-        this.name = name;
-        this.diameter = diameter;
-        this.minDistance = minDistance;
-        this.speed = speed;
-        this.hazardous = hazardous;
-    }
 
     public Neo(String name, double diameter, double minDistance, double speed, boolean hazardous, LocalDate date) {
         this.name = name;

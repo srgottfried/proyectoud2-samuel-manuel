@@ -1,8 +1,7 @@
 package damm.it.proyectoud2samuelmanuel.services;
 
+import damm.it.proyectoud2samuelmanuel.daos.UserDAO;
 import damm.it.proyectoud2samuelmanuel.models.User;
-import damm.it.proyectoud2samuelmanuel.repositories.users.UserRepository;
-import damm.it.proyectoud2samuelmanuel.repositories.users.UserRepositoryImpl;
 
 import java.util.NoSuchElementException;
 
@@ -11,7 +10,7 @@ import java.util.NoSuchElementException;
  */
 public class UserService {
     private static User activeUser = null;
-    private static final UserRepository userRepository = new UserRepositoryImpl();
+    private static final UserDAO userDAO = new UserDAO();
 
     /**
      * Método para iniciar la sesión de un usuario.
@@ -24,7 +23,12 @@ public class UserService {
         User user;
 
         try {
-            user = userRepository.get(String.format("%s:%s", name, pwd));
+            user = userDAO.get(name);
+            String decryptedPwd = CypherService.decryptUser(user.getDbKey(), String.format("%s:%s", name, pwd));
+            if (decryptedPwd == null)
+                return false;
+
+            user.setDbKey(decryptedPwd);
         } catch (NoSuchElementException e) {
             return false;
         }

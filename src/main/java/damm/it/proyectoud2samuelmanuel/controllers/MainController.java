@@ -2,13 +2,11 @@ package damm.it.proyectoud2samuelmanuel.controllers;
 
 import damm.it.proyectoud2samuelmanuel.Main;
 import damm.it.proyectoud2samuelmanuel.View;
+import damm.it.proyectoud2samuelmanuel.daos.NeoDayDAO;
+import damm.it.proyectoud2samuelmanuel.daos.RequestDAO;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
 import damm.it.proyectoud2samuelmanuel.models.NeoDay;
 import damm.it.proyectoud2samuelmanuel.models.Request;
-import damm.it.proyectoud2samuelmanuel.repositories.neos.NeoDayRepository;
-import damm.it.proyectoud2samuelmanuel.repositories.neos.NeoDayRepositoryImpl;
-import damm.it.proyectoud2samuelmanuel.repositories.requests.RequestRepository;
-import damm.it.proyectoud2samuelmanuel.repositories.requests.RequestRepositoryImpl;
 import damm.it.proyectoud2samuelmanuel.services.UserService;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -27,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -62,15 +61,15 @@ public class MainController extends Controller implements Initializable {
     @FXML
     private TextField txtSpeed;
 
-    private NeoDayRepository neoDayRepository;
-    private RequestRepository requestRepository;
+    private NeoDayDAO neoDayDAO;
+    private RequestDAO requestDAO;
     private Request lastRequest;
     private Task<List<NeoDay>> searchTask;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        requestRepository = new RequestRepositoryImpl();
-        neoDayRepository = new NeoDayRepositoryImpl();
+        neoDayDAO = new NeoDayDAO();
+        requestDAO = new RequestDAO();
     }
 
     @Override
@@ -82,7 +81,7 @@ public class MainController extends Controller implements Initializable {
         dateEnd.setValue(LocalDate.now());
         btnLogout.setText(UserService.getActiveUser().getName());
 
-        if (requestRepository.exists(UserService.getActiveUser().getName())) {
+        if (requestDAO.exists(UserService.getActiveUser())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
             URL icon;
@@ -152,7 +151,7 @@ public class MainController extends Controller implements Initializable {
         if (neoDay == null)
             return;
 
-        neoDayRepository.saveExternalJson(neoDay, outFile);
+        this.neoDayDAO.saveJson(neoDay, outFile);
     }
 
     /**
@@ -167,7 +166,7 @@ public class MainController extends Controller implements Initializable {
         if (neoDay == null)
             return;
 
-        neoDayRepository.saveExternalCsv(neoDay, outFile);
+        this.neoDayDAO.saveCsv(neoDay, outFile);
     }
 
     /**
@@ -177,7 +176,7 @@ public class MainController extends Controller implements Initializable {
         searchTask = new Task<>() {
             @Override
             protected List<NeoDay> call() throws NoSuchElementException {
-                return neoDayRepository.getBetween(dateStart.getValue(), dateEnd.getValue(), neo -> {
+                return neoDayDAO.getByLapse(dateStart.getValue(), dateEnd.getValue(), neo -> {
                     if (checkHazardous.isSelected() && !neo.isHazardous())
                         return true;
 
@@ -203,7 +202,7 @@ public class MainController extends Controller implements Initializable {
             tabPane.getTabs().clear();
 
             for (NeoDay neoDay : neoDays)
-                newTab(neoDay.getDate(), neoDay.getNeos());
+                newTab(neoDay.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), neoDay.getNeos());
         });
 
         searchTask.setOnFailed(event -> logger.error("Ha fallado la obtención de los NEOs: {}", searchTask.getException().getMessage()));
@@ -236,7 +235,7 @@ public class MainController extends Controller implements Initializable {
      * Método para cargar la última consulta del usuario activo.
      */
     private void loadRequest() {
-        Request request = requestRepository.get(UserService.getActiveUser().getName());
+        Request request = requestDAO.get(UserService.getActiveUser());
 
         selectName.setValue(request.getOpName());
         txtName.setText(request.getName());
@@ -258,7 +257,7 @@ public class MainController extends Controller implements Initializable {
      */
     private void saveRequest() {
         if (lastRequest != null)
-            requestRepository.add(lastRequest);
+            requestDAO.add(lastRequest);
     }
 
 
@@ -339,10 +338,7 @@ public class MainController extends Controller implements Initializable {
         TableView<Neo> table = (TableView<Neo>)node;
         List<Neo> selectedNeos = table.getSelectionModel().getSelectedItems().stream().toList();
 
-        NeoDay neoDay = new NeoDay(tabPane.getSelectionModel().getSelectedItem().getText());
-        neoDay.getNeos().addAll(selectedNeos);
-
-        return neoDay;
+        return new NeoDay(LocalDate.MIN, selectedNeos);
     }
 
     /**

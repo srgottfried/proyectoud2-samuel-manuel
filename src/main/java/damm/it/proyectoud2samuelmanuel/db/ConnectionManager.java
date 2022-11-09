@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Properties;
 
 public abstract class ConnectionManager {
@@ -25,6 +26,7 @@ public abstract class ConnectionManager {
         try {
             properties.load(Files.newBufferedReader(credentialsPath));
             String[] credentials = properties.getProperty(databaseName).split("%");
+            System.out.println(Arrays.toString(credentials));
             return DriverManager.getConnection(
                     credentials[0],
                     credentials[1],

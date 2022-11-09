@@ -8,13 +8,12 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class UserDAO implements DAO<User, String> {
     private final static Logger logger = LogManager.getLogger();
-    private final Connection connection;
 
     public UserDAO() {
-        this.connection = SqlService.getConnectionLogin();
     }
 
     @Override
@@ -25,10 +24,10 @@ public class UserDAO implements DAO<User, String> {
                 FROM `users` WHERE `username` = ?
                 """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, CypherService.hash(username));
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
+            ps.setString(1, CypherService.hash(username));
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
             if (resultSet.next()) {
                 return (new User(
                         resultSet.getInt("id"),
@@ -36,7 +35,7 @@ public class UserDAO implements DAO<User, String> {
                         resultSet.getString("db_key")
                 ));
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido leer el usuario de la base de datos: {}", e.getMessage());
         }
 
@@ -50,7 +49,7 @@ public class UserDAO implements DAO<User, String> {
                 (?)
                 """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
             ps.setString(1, CypherService.hash(user.getName()));
 
             ps.executeUpdate();
@@ -59,7 +58,7 @@ public class UserDAO implements DAO<User, String> {
             if (generatedKeys.next())
                 user.setId((int)generatedKeys.getLong(1));
 
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido guardar el usuario en la base de datos: {}", e.getMessage());
         }
     }
@@ -72,12 +71,12 @@ public class UserDAO implements DAO<User, String> {
                 WHERE `id` = ?
                 """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
             ps.setString(1, CypherService.hash(user.getName()));
             ps.setInt(2, user.getId());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido actualizar el usuario en la base de datos: {}", e.getMessage());
             throw new NoSuchElementException("No se ha encontrado al usuario.");
         }
@@ -90,7 +89,7 @@ public class UserDAO implements DAO<User, String> {
                 WHERE `id` = ?
                 """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
             ps.setInt(1, user.getId());
 
             ps.executeUpdate();
@@ -108,7 +107,7 @@ public class UserDAO implements DAO<User, String> {
             FROM `users` WHERE `username` = ?
             """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
             ps.setString(1, CypherService.hash(username));
 
             ResultSet resultSet = ps.executeQuery();
@@ -121,6 +120,4 @@ public class UserDAO implements DAO<User, String> {
 
         return false;
     }
-
-
 }

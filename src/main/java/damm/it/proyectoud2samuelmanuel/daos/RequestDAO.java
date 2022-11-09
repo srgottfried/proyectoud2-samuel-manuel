@@ -13,6 +13,9 @@ import java.util.NoSuchElementException;
 public class RequestDAO implements DAO<Request, User> {
     private static final Logger logger = LogManager.getLogger();
 
+    public RequestDAO() {
+    }
+
     @Override
     public Request get(User user) throws NoSuchElementException {
         if (!Files.exists(Path.of(".cache/users/" + user.getName() + "/lastRequest.cache")))

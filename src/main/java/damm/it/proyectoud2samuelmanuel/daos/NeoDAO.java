@@ -10,14 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class NeoDAO implements DAO<Neo, Integer> {
     private final static Logger logger = LogManager.getLogger();
-    private final Connection connection;
 
     public NeoDAO() {
-        this.connection = SqlService.getConnectionNasa();
     }
 
     @Override
@@ -28,7 +27,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                 FROM `neos` WHERE `id` = ?
                 """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setInt(1, id);
 
             ResultSet resultSet = ps.executeQuery();
@@ -43,7 +42,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                         resultSet.getDate("date").toLocalDate()
                 );
             }
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha ha podido leer el NEO de la base de datos: {}", e.getMessage());
         }
 
@@ -58,7 +57,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                 """;
 
         List<Neo> neos = new ArrayList<>();
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setDate(1, Date.valueOf(date));
 
             ResultSet resultSet = ps.executeQuery();
@@ -78,7 +77,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
             }
 
             return neos;
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha ha podido leer el NEO de la base de datos: {}", e.getMessage());
         }
 
@@ -91,8 +90,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                 INSERT INTO neos (`name`, `diameter`, `min_distance`, `speed`, `hazarous`, `date`) VALUES
                 (?,?,?,?,?,?)
                 """;
-
-        try (PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, neo.getName());
             ps.setDouble(2, neo.getDiameter());
             ps.setDouble(3, neo.getMinDistance());
@@ -106,7 +104,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
             if (generatedKeys.next())
                 neo.setId((int)generatedKeys.getLong(1));
 
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido insertar el NEO en la base de datos: {}", e.getMessage());
         }
     }
@@ -124,7 +122,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                 WHERE `id` = ?
                 """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setString(1, neo.getName());
             ps.setDouble(2, neo.getDiameter());
             ps.setDouble(3, neo.getMinDistance());
@@ -134,7 +132,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
             ps.setInt(7, neo.getId());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido actualizar el NEO en la base de datos: {}", e.getMessage());
             throw new NoSuchElementException("No se ha encontrado el NEO");
         }
@@ -146,11 +144,11 @@ public class NeoDAO implements DAO<Neo, Integer> {
                 DELETE FROM `neos`
                 WHERE `id` = ?
                 """;
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setInt(1, neo.getId());
 
             ps.executeUpdate();
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido eliminar el NEO en la base de datos: {}", e.getMessage());
             throw new NoSuchElementException("No se ha encontrado el NEO");
         }
@@ -164,14 +162,14 @@ public class NeoDAO implements DAO<Neo, Integer> {
             FROM `neos` WHERE `id` = ?
         """;
 
-        try (PreparedStatement ps = connection.prepareStatement(query)) {
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setInt(1, id);
 
             ResultSet resultSet = ps.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt("id") != 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido comprobar la existencia del NEO en la base de datos: {}", e.getMessage());
         }
 

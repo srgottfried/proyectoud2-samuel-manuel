@@ -19,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -26,10 +27,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     private final static Logger logger = LogManager.getLogger();
     private final static NeoDAO neoDAO = new NeoDAO();
-    private final Connection connection;
 
     public NeoDayDAO() {
-        this.connection = SqlService.getConnectionNasa();
     }
 
     @Override
@@ -75,10 +74,10 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
             WHERE date = ?
             """;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
+            ps.setString(1, localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
 
-            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSet resultSet = ps.executeQuery();
             if (resultSet.next())
                 return resultSet.getInt("id") != 0;
 

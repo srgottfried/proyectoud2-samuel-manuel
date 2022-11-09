@@ -1,6 +1,7 @@
 package damm.it.proyectoud2samuelmanuel;
 
 import damm.it.proyectoud2samuelmanuel.controllers.Controller;
+import damm.it.proyectoud2samuelmanuel.services.SqlService;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -15,6 +16,7 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch();
+        SqlService.close();
     }
 
     /**

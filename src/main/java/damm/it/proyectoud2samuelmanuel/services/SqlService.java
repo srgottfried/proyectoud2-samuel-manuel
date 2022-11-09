@@ -7,12 +7,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Objects;
 import java.util.Properties;
 
 public abstract class SqlService {
@@ -65,10 +62,28 @@ public abstract class SqlService {
         return connectionNasa;
     }
 
+    public static void closeNasa() {
+        try {
+            if (connectionNasa != null) {
+                connectionNasa.close();
+                connectionNasa = null;
+            }
+        } catch (SQLException e) {
+            logger.error("No se ha podido cerrar la conexión con la base de datos: {}", e.getMessage());
+        }
+    }
+
     public static void close() {
         try {
-            connectionLogin.close();
-            connectionNasa.close();
+            if (connectionLogin != null) {
+                connectionLogin.close();
+                connectionLogin = null;
+            }
+
+            if (connectionNasa != null) {
+                connectionNasa.close();
+                connectionNasa = null;
+            }
         } catch (SQLException e) {
             logger.error("No se ha podido cerrar la conexión con la base de datos: {}", e.getMessage());
         }

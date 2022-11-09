@@ -41,6 +41,7 @@ public class UserService {
      * Método para cerrar la sesión activa.
      */
     public static void logout() {
+        SqlService.closeNasa();
         activeUser = null;
     }
 

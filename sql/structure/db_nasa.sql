@@ -1,8 +1,8 @@
-create database if not exists nasa;
-use nasa;
+CREATE DATABASE IF NOT EXISTS nasa;
+USE nasa;
 
-drop table neos;
-create table neos
+DROP TABLE IF EXISTS neos;
+CREATE TABLE neos
 (
     id           int          not null auto_increment,
     name         varchar(255) not null,
@@ -16,8 +16,8 @@ create table neos
     key (date)
 ) engine innodb;
 
-drop table apods;
-create table apods
+DROP TABLE IF EXISTS apods;
+CREATE TABLE apods
 (
     id          int          not null auto_increment,
     date        date         not null,

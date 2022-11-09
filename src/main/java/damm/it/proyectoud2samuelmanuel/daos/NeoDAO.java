@@ -53,7 +53,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
     public List<Neo> getByDate(LocalDate date, Predicate<Neo> predicate) throws NoSuchElementException {
         String query = """
                 SELECT
-                    `name`, `diameter`, `min_distance`, `speed`, `hazarous`, `date`
+                    `id`, `name`, `diameter`, `min_distance`, `speed`, `hazarous`, `date`
                 FROM `neos` WHERE `date` = ?
                 """;
 
@@ -73,7 +73,7 @@ public class NeoDAO implements DAO<Neo, Integer> {
                         resultSet.getDate("date").toLocalDate()
                 );
 
-                if (predicate != null && predicate.test(neo))
+                if (predicate != null && !predicate.test(neo))
                     neos.add(neo);
             }
 

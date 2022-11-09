@@ -1,16 +1,17 @@
 package damm.it.proyectoud2samuelmanuel.models;
 
 import java.io.InputStream;
+import java.time.LocalDate;
 
 public class Apod {
     private int id;
-    private String date;
+    private LocalDate date;
     private InputStream img;
     private String title;
     private String explanation;
     private String copyright;
 
-    public Apod(String date, InputStream img, String title, String explanation, String copyright) {
+    public Apod(LocalDate date, InputStream img, String title, String explanation, String copyright) {
         this.date = date;
         this.img = img;
         this.title = title;
@@ -18,7 +19,7 @@ public class Apod {
         this.copyright = copyright;
     }
 
-    public Apod(int id, String date, InputStream img, String title, String explanation, String copyright) {
+    public Apod(int id, LocalDate date, InputStream img, String title, String explanation, String copyright) {
         this.id = id;
         this.date = date;
         this.img = img;
@@ -35,11 +36,11 @@ public class Apod {
         this.id = id;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

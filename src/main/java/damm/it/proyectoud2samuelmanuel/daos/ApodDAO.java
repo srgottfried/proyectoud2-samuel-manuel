@@ -1,6 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.daos;
 
-import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
+import damm.it.proyectoud2samuelmanuel.services.ConnectionService;
 import damm.it.proyectoud2samuelmanuel.models.Apod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +19,7 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
     }
 
     public ApodDAO() {
-        this.connection = ConnectionManager.getConnection("nasa");
+        this.connection = ConnectionService.getConnection("nasa");
     }
 
     @Override
@@ -37,13 +37,32 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
             if (resultSet.next()) {
                 return new Apod(
                         resultSet.getInt("id"),
-                        resultSet.getDate("date").toString(),
+                        resultSet.getDate("date").toLocalDate(),
                         resultSet.getBinaryStream("img"),
                         resultSet.getString("title"),
                         resultSet.getString("explanation"),
                         resultSet.getString("copyright")
                 );
             }
+        } catch (SQLException e) {
+            logger.error("No se ha podido leer el APOD de la base de datos: {}", e.getMessage());
+        }
+
+        throw new NoSuchElementException("No se ha encontrado el APOD");
+    }
+
+    public LocalDate getLastDate() throws NoSuchElementException {
+        String query = """
+                SELECT
+                    `date`
+                FROM `apods` ORDER BY `date` DESC
+                """;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return resultSet.getDate("date").toLocalDate();
+
         } catch (SQLException e) {
             logger.error("No se ha podido leer el APOD de la base de datos: {}", e.getMessage());
         }

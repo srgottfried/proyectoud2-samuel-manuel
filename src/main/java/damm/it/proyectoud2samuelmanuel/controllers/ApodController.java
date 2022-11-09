@@ -20,7 +20,7 @@ import org.apache.logging.log4j.Logger;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 /**
@@ -54,7 +54,13 @@ public class ApodController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         apodDAO = new ApodDAO();
-        date.setValue(LocalDate.now(ZoneOffset.UTC));
+
+        try {
+            date.setValue(apodDAO.getLastDate());
+        } catch (NoSuchElementException e) {
+            logger.error("No hay ninguna imagen del dia en la base de datos.");
+        }
+
         updateQotd();
     }
 
@@ -121,8 +127,7 @@ public class ApodController extends Controller implements Initializable {
         task.setOnSucceeded(event -> {
             Apod apod = task.getValue();
             if (date.getValue() == null) { // La primera consulta se hace sin fecha, para descubrir el último dia del que hay foto
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                lastAvailableDate = LocalDate.parse(apod.getDate(), formatter);
+                lastAvailableDate = apod.getDate();
                 date.setValue(lastAvailableDate);
 
                 date.setDayCellFactory(param -> new DateCell() {

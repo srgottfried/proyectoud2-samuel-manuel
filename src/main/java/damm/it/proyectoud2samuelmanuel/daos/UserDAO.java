@@ -1,6 +1,6 @@
 package damm.it.proyectoud2samuelmanuel.daos;
 
-import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
+import damm.it.proyectoud2samuelmanuel.services.ConnectionService;
 import damm.it.proyectoud2samuelmanuel.models.User;
 import damm.it.proyectoud2samuelmanuel.services.CypherService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,7 @@ public class UserDAO implements DAO<User, String> {
     }
 
     public UserDAO() {
-        this.connection = ConnectionManager.getConnection("login_nasa");
+        this.connection = ConnectionService.getConnection("login_nasa");
     }
 
     @Override

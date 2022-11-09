@@ -3,7 +3,7 @@ package damm.it.proyectoud2samuelmanuel.daos;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
-import damm.it.proyectoud2samuelmanuel.db.ConnectionManager;
+import damm.it.proyectoud2samuelmanuel.services.ConnectionService;
 import damm.it.proyectoud2samuelmanuel.models.Neo;
 import damm.it.proyectoud2samuelmanuel.models.NeoDay;
 import org.apache.logging.log4j.LogManager;
@@ -34,7 +34,7 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     }
 
     public NeoDayDAO() {
-        this.connection = ConnectionManager.getConnection("nasa");
+        this.connection = ConnectionService.getConnection("nasa");
     }
 
     @Override

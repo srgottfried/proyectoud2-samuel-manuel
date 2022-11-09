@@ -1,4 +1,4 @@
-package damm.it.proyectoud2samuelmanuel.db;
+package damm.it.proyectoud2samuelmanuel.services;
 
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Properties;
 
-public abstract class ConnectionManager {
+public abstract class ConnectionService {
     private static Path credentialsPath = Path.of("src/main/resources/damm/it/proyectoud2samuelmanuel/db/credentials");
 
     public static Path getCredentialsPath() {
@@ -41,14 +41,5 @@ public abstract class ConnectionManager {
         }
         return null;
     }
-
-    public static void main(String[] args) throws SQLException {
-        Connection c = ConnectionManager.getConnection("login_nasa");
-        if (c != null) {
-            c.close();
-        }
-
-    }
-
 }
 

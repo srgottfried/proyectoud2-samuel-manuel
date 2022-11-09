@@ -5,7 +5,7 @@ CREATE USER IF NOT EXISTS 'manuel'@'localhost' IDENTIFIED BY 'PassSuperSecreta2'
 GRANT ALL PRIVILEGES ON nasa.* TO 'manuel'@'localhost';
 
 CREATE USER IF NOT EXISTS 'login'@'localhost' IDENTIFIED BY 'PassPublica';
-GRANT ALL PRIVILEGES ON login_nasa.* TO 'login'@'localhost';
+GRANT ALL PRIVILEGES ON login_nasa.users TO 'login'@'localhost';
 
 FLUSH PRIVILEGES;
 

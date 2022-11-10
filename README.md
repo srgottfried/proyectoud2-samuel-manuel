@@ -1,10 +1,9 @@
 # Introducción
-Este documento condensa el propósito general de la aplicación, el funcionamiento de la API utilizada,
-los manuales técnico y de usuario y algunos extras y mejoras que podrían implementarse en un futuro.
+Este documento condensa el propósito general de la aplicación, los manuales técnico y de usuario y algunos extras y mejoras que podrían implementarse en un futuro.
 
 ### Objeto inicial
 Solución a consultas actualizadas de cuerpos en órbita terrestre o extraterrestre con distancia
-mínima a la Tierra (de ahora en adelante NEOs) en intervalo de tiempo inidicado. Complementos de informacion de carácter físico
+mínima a la Tierra (de ahora en adelante NEOs) en intervalo de tiempo indicado. Complementos de informacion de carácter físico
 y de peligrosidad.
 
 ### Utilidad
@@ -16,24 +15,6 @@ Es posible aplicar filtros sencillos como:
 - **Máxima aproximación ([LD](https://es.wikipedia.org/wiki/Luna#Distancia_a_la_Luna))** del NEO a La Tierra en su periodo orbital.
 - **Velocidad en máxima aproximación (km/s)**
 - **Potencialmente peligroso** valora en base a parámetros no mostrados el índice de peligrosidad del NEO.
-
-
-# Sobre las APIs
-Se ha hecho uso del servicio [Open APIs de la NASA](https://api.nasa.gov/)
-, tomando en particular datos de las APIs **APOD** y **Asterpods NeoWs**.
-
-
-- **APOD** o *Astronomy Picture of the Day* es un servicio RESTful para obtener
-una imagen preseleccionada por el equipo de trabajadores del JPL [SpaceRocks](https://github.com/SpaceRocks/)
-Estas imágenes son actualizadas diariamente y acompañadas de frases memorables.
-
-- **Asteroids NeoWs** es un servicio RESTful para obtener información sobre asteroides
-cercanos a La Tierra.
-
-Para la realización de pruebas previas, se ha construido la
-siguiente colección de consultas en Postman:
-
-![](doc_img/doc_postman.jpg)
 
 
 # Manual técnico
@@ -69,18 +50,17 @@ siguiente colección de consultas en Postman:
 - `Log4J`: El registro de errores se realiza mediante la dependencia Log4J, bien conocida en el entorno de Java.
 - `Jackson`: Una librería para la el procesado de archivos JSon, con soporte para XML y CSV.
 - `MVC`: Se ha respetado el Modelo Vista Controlador, manteniendo la lógica de la aplicación separada, tanto de las vistas como de la gestión de los datos.
+- `Asymmetric Cryptography`: Implementación sistema de gestión de usuarios inspirado en criptografía asimétrica.
 
 ## Gestión de datos de usuario
 
 Para este proyecto se ha partido del supuesto de una aplicación de uso compartido entre varios usuarios, asumiblemente desde un mismo equipo, dada su naturaleza offline.
 
-Dado que cada usuario deberá almacenar datos privados (En este caso su apiKey), se ha optado por almacenar dichos datos encriptados en un fichero. 
-
 La clave de desencriptado está formada por el nombre del usuario, seguido de dos puntos y su contraseña. Por ejemplo: "usuario:contraseña". A esta string se le añadirá una salt y un vector de inicialización generados al encriptar los datos, y que constituyen los 16 y 12 primeros bytes del dato encriptado, respectivamente. Por último, el resultado de hasheará mediante el algoritmo `PBKDF2WithHmacSHA256`.
 
 El algoritmo empleado para el encriptado ha sido `AES/GCM/NoPadding`, uno de los más recomendados actualmente.
 
-Mediante el uso de estos mecanismos, podemos garantizar que los recursos privados de los usuarios no podrán ser descifrados si se carece de los datos de login correctos, aunque no se puede evitar la adición o eliminación de usuarios.
+Mediante el uso de estos mecanismos, podemos garantizar que los recursos privados de los usuarios no podrán ser descifrados si se carece de los datos de login correctos.
 
 # Manual de usuario
 ## Lanzar la aplicación
@@ -95,7 +75,7 @@ con su cuenta personal.
 Cada cuenta de usuario está formada por:
 - Nombre de usuario
 - Contraseña
-- API Key personal proporcionada por el servicio de API de la NASA
+- DB Key personal
 
 ### Imagen del día
 Tras iniciar sesión, se muestra una ventana con la imagen del día
@@ -150,28 +130,33 @@ de las teclas <kbd>Enter</kbd> y <kbd>Esc</kbd> para aceptar o rechazar, respect
 
 # Reparto de tareas
 ## Manuel
-- Peticiones a las API.
+- Creación y gestión de las conexiones.
+- Creación de las bases de datos.
+- Volcado de datos a las bases de datos
+- Implementación de los DAO.
 - Guardado de la última petición del usuario.
 - Interfaces de usuario.
 - Documentación readme.
 
 ## Samuel
-- Gestión de usuarios.
-- Acceso a datos locales.
+- Gestión del login y procesos de encriptación.
+- Implementación del sistema de encriptación.
 - Exportación de ficheros.
+- Volcado de datos a la base de datos.
 - Interfaces de usuario.
 - Documentación javadoc.
+- Documentación readme.
 
 # Extras
 
-|Extras|     |
-|-----------------------------------------------------------------|-----|
-|Ordenación de resultados de las consultas y almacenaje de los datos|&check;|
-|Control de errores|&check;|
-|Uso de la aplicación offline|&check;|
-|Autentificación en la API|&check;|
-|Almacenamiento del último estado de ejecución|&check;|
-|Inicio de sesión de usuario|&check;|
+| Extras                                                              |     |
+|---------------------------------------------------------------------|-----|
+| Ordenación de resultados de las consultas y almacenaje de los datos |&check;|
+| Control de errores                                                  |&check;|
+| Login. Acceso con usuario y contraseñal en conexión independiente   |&check;|
+| Login. Implementación base a una perspectiva segura                 |&check;|
+| Almacenamiento del último estado de ejecución                       |&check;|
+| Inicio de sesión de usuario                                         |&check;|
 
 # Posibles mejoras
 
@@ -180,7 +165,7 @@ Existen muchas opciones de ampliación del proyecto, pero quizás las más desta
 - Permitir entrar a una nueva vista con datos más pormenorizados acerca de un asteroide (Su órbita, su mínima distancia a la tierra, etc.)
 - Una opción para generar una gráfica con la evolución de los NEO a partir de los dias indicados.
 - Una gestión de usuarios más completa, permitiendo crearlos o modificarlos.
-- Acceder a otros recursos astronómicos; El api de la nasa tiene una gran cantidad de información interesante.
+- Acceder a otros recursos astronómicos.
 
 # Conclusiones
 

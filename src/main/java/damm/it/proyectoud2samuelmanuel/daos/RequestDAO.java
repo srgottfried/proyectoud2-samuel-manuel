@@ -16,6 +16,12 @@ public class RequestDAO implements DAO<Request, User> {
     public RequestDAO() {
     }
 
+    /**
+     * Devuelve una Request a partir de un usuario de entrada.
+     * @param user
+     * @return
+     * @throws NoSuchElementException
+     */
     @Override
     public Request get(User user) throws NoSuchElementException {
         if (!Files.exists(Path.of(".cache/users/" + user.getName() + "/lastRequest.cache")))
@@ -33,6 +39,10 @@ public class RequestDAO implements DAO<Request, User> {
         return request;
     }
 
+    /**
+     * Añade una Request
+     * @param request
+     */
     @Override
     public void add(Request request) {
         try {

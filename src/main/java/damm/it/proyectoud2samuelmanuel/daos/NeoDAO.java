@@ -19,6 +19,13 @@ public class NeoDAO implements DAO<Neo, Integer> {
     public NeoDAO() {
     }
 
+    /**
+     * Obtiene un neo a partir de su id.
+     *
+     * @param id
+     * @return Neo
+     * @throws NoSuchElementException
+     */
     @Override
     public Neo get(Integer id) throws NoSuchElementException {
         String query = """
@@ -49,6 +56,14 @@ public class NeoDAO implements DAO<Neo, Integer> {
         throw new NoSuchElementException("No se ha encontrado el NEO");
     }
 
+    /**
+     * Obtiene una lista de neos a partir de un intervalo de fechas.
+     *
+     * @param date
+     * @param predicate
+     * @return Lista de neos
+     * @throws NoSuchElementException
+     */
     public List<Neo> getByDate(LocalDate date, Predicate<Neo> predicate) throws NoSuchElementException {
         String query = """
                 SELECT
@@ -84,6 +99,11 @@ public class NeoDAO implements DAO<Neo, Integer> {
         throw new NoSuchElementException("No se ha encontrado el NEO");
     }
 
+    /**
+     * Aáde un neo a la base de datos.
+     *
+     * @param neo
+     */
     @Override
     public void add(Neo neo) {
         String query = """
@@ -102,13 +122,19 @@ public class NeoDAO implements DAO<Neo, Integer> {
             ResultSet generatedKeys = ps.getGeneratedKeys();
 
             if (generatedKeys.next())
-                neo.setId((int)generatedKeys.getLong(1));
+                neo.setId((int) generatedKeys.getLong(1));
 
         } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido insertar el NEO en la base de datos: {}", e.getMessage());
         }
     }
 
+    /**
+     * Actualiza un neo de la base de datos.
+     *
+     * @param neo
+     * @throws NoSuchElementException
+     */
     @Override
     public void update(Neo neo) throws NoSuchElementException {
         String query = """
@@ -138,6 +164,13 @@ public class NeoDAO implements DAO<Neo, Integer> {
         }
     }
 
+
+    /**
+     * Borra un neo de la base de datos.
+     *
+     * @param neo
+     * @throws NoSuchElementException
+     */
     @Override
     public void remove(Neo neo) throws NoSuchElementException {
         String query = """
@@ -154,13 +187,20 @@ public class NeoDAO implements DAO<Neo, Integer> {
         }
     }
 
+
+    /**
+     * Comprueba si existe un neo con id dada en la base de datos.
+     *
+     * @param id
+     * @return si existe
+     */
     @Override
     public boolean exists(Integer id) {
         String query = """
-            SELECT
-                count(*)
-            FROM `neos` WHERE `id` = ?
-        """;
+                    SELECT
+                        count(*)
+                    FROM `neos` WHERE `id` = ?
+                """;
 
         try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setInt(1, id);
@@ -172,7 +212,6 @@ public class NeoDAO implements DAO<Neo, Integer> {
         } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido comprobar la existencia del NEO en la base de datos: {}", e.getMessage());
         }
-
         return false;
     }
 }

@@ -33,11 +33,25 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     public NeoDayDAO() {
     }
 
+    /**
+     * Obtiene un NeoDay a partir  de una fecha de dada.
+     * @param localDate
+     * @return NeoDay
+     * @throws NoSuchElementException
+     */
     @Override
     public NeoDay get(LocalDate localDate) throws NoSuchElementException {
         return new NeoDay(localDate, neoDAO.getByDate(localDate, null));
     }
 
+    /**
+     * Obtiene lista de NeoDays a partir de un intervalo temporal dado. Admite un predicado para filtrar elementos.
+     * @param dateStart
+     * @param dateEnd
+     * @param predicate
+     * @return Lista de neos
+     * @throws NoSuchElementException
+     */
     public List<NeoDay> getByLapse(LocalDate dateStart, LocalDate dateEnd, Predicate<Neo> predicate) throws NoSuchElementException {
         int lapse = (int)DAYS.between(dateStart, dateEnd) + 1;
         List<NeoDay> neoDays = new ArrayList<>();
@@ -49,7 +63,6 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
             if (!neos.isEmpty())
                 neoDays.add(new NeoDay(localDate, neos));
         }
-
         return neoDays;
     }
 

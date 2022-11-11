@@ -17,6 +17,12 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
     public ApodDAO() {
     }
 
+    /**
+     * Obtiene la Apod correspondiente a la fecha de entrada.
+     * @param localDate
+     * @return Apod
+     * @throws NoSuchElementException
+     */
     @Override
     public Apod get(LocalDate localDate) throws NoSuchElementException {
         String query = """
@@ -46,6 +52,11 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
         throw new NoSuchElementException("No se ha encontrado el APOD");
     }
 
+    /**
+     * Obtiene la fecha correspondiente al último APOD subido
+     * @return LocalDate del último apod.
+     * @throws NoSuchElementException
+     */
     public LocalDate getLastDate() throws NoSuchElementException {
         String query = """
                 SELECT
@@ -65,6 +76,10 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
         throw new NoSuchElementException("No se ha encontrado el APOD");
     }
 
+    /**
+     * Añade un apod a la base de datos
+     * @param apod
+     */
     @Override
     public void add(Apod apod) {
         String query = """
@@ -90,6 +105,11 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
         }
     }
 
+    /**
+     * Actualzia un apod de la base de datos.
+     * @param apod
+     * @throws NoSuchElementException
+     */
     @Override
     public void update(Apod apod) throws NoSuchElementException {
         String query = """
@@ -117,6 +137,11 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
         }
     }
 
+    /**
+     * Borra un apod de la base de datos.
+     * @param apod
+     * @throws NoSuchElementException
+     */
     @Override
     public void remove(Apod apod) throws NoSuchElementException {
         String query = """
@@ -134,6 +159,11 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
         }
     }
 
+    /**
+     * Comprueba la existencia de un apod con fecha dada en la base de datos.
+     * @param localDate
+     * @return si existe.
+     */
     @Override
     public boolean exists(LocalDate localDate) {
         String query = """

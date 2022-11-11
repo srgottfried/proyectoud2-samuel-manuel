@@ -10,12 +10,22 @@ import java.sql.*;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+/**
+ * Clase que implementa el acceso a datos de User.
+ */
 public class UserDAO implements DAO<User, String> {
     private final static Logger logger = LogManager.getLogger();
 
     public UserDAO() {
     }
 
+    /**
+     * Obtiene usuario a partor de nombre.
+     *
+     * @param username
+     * @return User.
+     * @throws NoSuchElementException
+     */
     @Override
     public User get(String username) throws NoSuchElementException {
         String query = """
@@ -42,6 +52,11 @@ public class UserDAO implements DAO<User, String> {
         throw new NoSuchElementException("No se ha encontrado al usuario.");
     }
 
+    /**
+     * Añade usuario a la base de datos.
+     *
+     * @param user
+     */
     @Override
     public void add(User user) {
         String query = """
@@ -56,13 +71,19 @@ public class UserDAO implements DAO<User, String> {
             ResultSet generatedKeys = ps.getGeneratedKeys();
 
             if (generatedKeys.next())
-                user.setId((int)generatedKeys.getLong(1));
+                user.setId((int) generatedKeys.getLong(1));
 
         } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido guardar el usuario en la base de datos: {}", e.getMessage());
         }
     }
 
+    /**
+     * Actualiza usuario en la base de datos.
+     *
+     * @param user
+     * @throws NoSuchElementException
+     */
     @Override
     public void update(User user) throws NoSuchElementException {
         String query = """
@@ -82,6 +103,12 @@ public class UserDAO implements DAO<User, String> {
         }
     }
 
+    /**
+     * Borra usuario de la base de datos
+     *
+     * @param user
+     * @throws NoSuchElementException
+     */
     @Override
     public void remove(User user) throws NoSuchElementException {
         String query = """
@@ -99,13 +126,20 @@ public class UserDAO implements DAO<User, String> {
         }
     }
 
+    /**
+     * Comprueba si existe un usuario por nombre.
+     *
+     * @param username
+     * @return si existe usuario.
+     * @throws NoSuchElementException
+     */
     @Override
     public boolean exists(String username) throws NoSuchElementException {
         String query = """
-            SELECT
-                count(*)
-            FROM `users` WHERE `username` = ?
-            """;
+                SELECT
+                    count(*)
+                FROM `users` WHERE `username` = ?
+                """;
 
         try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionLogin()).prepareStatement(query)) {
             ps.setString(1, CypherService.hash(username));

@@ -26,6 +26,9 @@ import java.util.function.Predicate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+/**
+ * Clase que implementa el acceso a datos de NeoDay.
+ */
 public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     private final static Logger logger = LogManager.getLogger();
     private final static NeoDAO neoDAO = new NeoDAO();
@@ -66,21 +69,40 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
         return neoDays;
     }
 
+    /**
+     * Añade NeoDay.
+     * @param neoDay
+     */
     @Override
     public void add(NeoDay neoDay) {
         neoDay.getNeos().forEach(neoDAO::add);
     }
 
+    /**
+     * Actualiza NeoDay.
+     * @param neoDay
+     * @throws NoSuchElementException
+     */
     @Override
     public void update(NeoDay neoDay) throws NoSuchElementException {
         neoDay.getNeos().forEach(neoDAO::update);
     }
 
+    /**
+     * Borra NeoDay.
+     * @param neoDay
+     * @throws NoSuchElementException
+     */
     @Override
     public void remove(NeoDay neoDay) throws NoSuchElementException {
         neoDay.getNeos().forEach(neoDAO::remove);
     }
 
+    /**
+     * Comprueba existencia de Neos por fecha.
+     * @param localDate
+     * @return si existe.
+     */
     @Override
     public boolean exists(LocalDate localDate) {
         String query = """
@@ -103,6 +125,11 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
         return false;
     }
 
+    /**
+     * Almacena datos en Json.
+     * @param neoDay
+     * @param outfile
+     */
     public void saveJson(NeoDay neoDay, File outfile) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JSR310Module());
@@ -114,6 +141,11 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
         }
     }
 
+    /**
+     * Almacena datos en CSV.
+     * @param neoDay
+     * @param outfile
+     */
     public void saveCsv(NeoDay neoDay, File outfile) {
         CsvMapper mapper =  new CsvMapper();
         CsvSchema schema = mapper.schemaFor(Neo.class);

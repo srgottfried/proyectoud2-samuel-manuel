@@ -10,6 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
+/**
+ * Clase que modela el acceso a datos de Request.
+ */
 public class RequestDAO implements DAO<Request, User> {
     private static final Logger logger = LogManager.getLogger();
 
@@ -59,11 +62,21 @@ public class RequestDAO implements DAO<Request, User> {
         }
     }
 
+    /**
+     * Actualiza una Request.
+     * @param request
+     * @throws NoSuchElementException
+     */
     @Override
     public void update(Request request) throws NoSuchElementException {
         add(request);
     }
 
+    /**
+     * Borra una Request.
+     * @param request
+     * @throws NoSuchElementException
+     */
     @Override
     public void remove(Request request) throws NoSuchElementException {
         Path path = Path.of(".cache/users/" + request.getUser() + "/lastRequest.cache");
@@ -79,6 +92,11 @@ public class RequestDAO implements DAO<Request, User> {
         }
     }
 
+    /**
+     * Comprueba existencia de usuario en cache de datos.
+     * @param user
+     * @return
+     */
     @Override
     public boolean exists(User user) {
         return Files.exists(Path.of(".cache/users/" + user.getName() + "/lastRequest.cache"));

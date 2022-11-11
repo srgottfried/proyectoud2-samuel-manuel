@@ -13,6 +13,9 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * Clase que implementa el acceso a datos de Neo.
+ */
 public class NeoDAO implements DAO<Neo, Integer> {
     private final static Logger logger = LogManager.getLogger();
 

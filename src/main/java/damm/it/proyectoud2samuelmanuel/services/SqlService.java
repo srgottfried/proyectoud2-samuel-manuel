@@ -12,12 +12,19 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+/**
+ * Clase de abstracción para proporcionar conexiones a la base de datos.
+ */
 public abstract class SqlService {
     private static final Logger logger = LogManager.getLogger();
     private static final Properties properties = new Properties();
     public static Connection connectionNasa;
     public static Connection connectionLogin;
 
+    /**
+     * Método que retorna una conexión a la base de datos de login de usuarios.
+     * @return
+     */
     public static Connection getConnectionLogin() {
         try {
             if (connectionLogin == null || connectionLogin.isClosed()) {
@@ -38,6 +45,10 @@ public abstract class SqlService {
         return connectionLogin;
     }
 
+    /**
+     * Método que retorna una conexión a la base de datos principal.
+     * @return
+     */
     public static Connection getConnectionNasa() {
         User activeUser = UserService.getActiveUser();
         if (activeUser == null)
@@ -62,6 +73,9 @@ public abstract class SqlService {
         return connectionNasa;
     }
 
+    /**
+     * Cierra la conexión con la base de datos principal.
+     */
     public static void closeNasa() {
         try {
             if (connectionNasa != null) {
@@ -73,6 +87,9 @@ public abstract class SqlService {
         }
     }
 
+    /**
+     * Cierra todas las conexiones abiertas con las bases de datos.
+     */
     public static void close() {
         try {
             if (connectionLogin != null) {

@@ -3,6 +3,9 @@ package damm.it.proyectoud2samuelmanuel.models;
 import java.io.InputStream;
 import java.time.LocalDate;
 
+/**
+ * Clase que modela el APOD.
+ */
 public class Apod {
     private int id;
     private LocalDate date;

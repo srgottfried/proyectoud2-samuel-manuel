@@ -13,9 +13,6 @@ import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-/**
- * Clase que implementa el acceso a datos de Neo.
- */
 public class NeoDAO implements DAO<Neo, Integer> {
     private final static Logger logger = LogManager.getLogger();
 
@@ -25,9 +22,9 @@ public class NeoDAO implements DAO<Neo, Integer> {
     /**
      * Obtiene un neo a partir de su id.
      *
-     * @param id
-     * @return Neo
-     * @throws NoSuchElementException
+     * @param id Id del Neo a obtener
+     * @return El Neo con el id solicitado
+     * @throws NoSuchElementException Si no existe el Neo indicado
      */
     @Override
     public Neo get(Integer id) throws NoSuchElementException {
@@ -62,10 +59,10 @@ public class NeoDAO implements DAO<Neo, Integer> {
     /**
      * Obtiene una lista de neos a partir de un intervalo de fechas.
      *
-     * @param date
-     * @param predicate
-     * @return Lista de neos
-     * @throws NoSuchElementException
+     * @param date La fecha de la que se quieren obtener los Neo
+     * @param predicate Filtro que deben cumplir para ser elegidos
+     * @return Lista de neos solicitada
+     * @throws NoSuchElementException Si no existe ningún Neo para ese dia
      */
     public List<Neo> getByDate(LocalDate date, Predicate<Neo> predicate) throws NoSuchElementException {
         String query = """
@@ -103,9 +100,9 @@ public class NeoDAO implements DAO<Neo, Integer> {
     }
 
     /**
-     * Aáde un neo a la base de datos.
+     * Añade un neo a la base de datos.
      *
-     * @param neo
+     * @param neo El Neo a añadir
      */
     @Override
     public void add(Neo neo) {
@@ -135,8 +132,8 @@ public class NeoDAO implements DAO<Neo, Integer> {
     /**
      * Actualiza un neo de la base de datos.
      *
-     * @param neo
-     * @throws NoSuchElementException
+     * @param neo El Neo a actualizar
+     * @throws NoSuchElementException Si el Neo indicado no existe
      */
     @Override
     public void update(Neo neo) throws NoSuchElementException {
@@ -171,8 +168,8 @@ public class NeoDAO implements DAO<Neo, Integer> {
     /**
      * Borra un neo de la base de datos.
      *
-     * @param neo
-     * @throws NoSuchElementException
+     * @param neo El Neo a eliminar
+     * @throws NoSuchElementException Si el Neo indicado no existe
      */
     @Override
     public void remove(Neo neo) throws NoSuchElementException {
@@ -194,8 +191,8 @@ public class NeoDAO implements DAO<Neo, Integer> {
     /**
      * Comprueba si existe un neo con id dada en la base de datos.
      *
-     * @param id
-     * @return si existe
+     * @param id El id del Neo a comprobar
+     * @return True si existe, false en caso contrario
      */
     @Override
     public boolean exists(Integer id) {

@@ -19,9 +19,10 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Obtiene la Apod correspondiente a la fecha de entrada.
-     * @param localDate
-     * @return Apod
-     * @throws NoSuchElementException
+     *
+     * @param localDate Fecha de la cual se desea obtener el Apod
+     * @return Apod El apod correspondiente a dicha fecha
+     * @throws NoSuchElementException Si no existe un Apod con esa fecha
      */
     @Override
     public Apod get(LocalDate localDate) throws NoSuchElementException {
@@ -54,8 +55,9 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Obtiene la fecha correspondiente al último APOD subido
+     *
      * @return LocalDate del último apod.
-     * @throws NoSuchElementException
+     * @throws NoSuchElementException Si no existe ningun Apod
      */
     public LocalDate getLastDate() throws NoSuchElementException {
         String query = """
@@ -78,7 +80,8 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Añade un apod a la base de datos
-     * @param apod
+     *
+     * @param apod El Apod a añadir
      */
     @Override
     public void add(Apod apod) {
@@ -98,7 +101,7 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
             ResultSet generatedKeys = ps.getGeneratedKeys();
 
             if (generatedKeys.next())
-                apod.setId((int)generatedKeys.getLong(1));
+                apod.setId((int) generatedKeys.getLong(1));
 
         } catch (SQLException | NullPointerException e) {
             logger.error("No se ha podido guardar el APOD en la base de datos: {}", e.getMessage());
@@ -107,8 +110,9 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Actualzia un apod de la base de datos.
-     * @param apod
-     * @throws NoSuchElementException
+     *
+     * @param apod El Apod a actualizar
+     * @throws NoSuchElementException Si el Apod indicado no existe
      */
     @Override
     public void update(Apod apod) throws NoSuchElementException {
@@ -139,8 +143,9 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Borra un apod de la base de datos.
-     * @param apod
-     * @throws NoSuchElementException
+     *
+     * @param apod El Apod a eliminar
+     * @throws NoSuchElementException Si el Apod indicado no existe.
      */
     @Override
     public void remove(Apod apod) throws NoSuchElementException {
@@ -161,16 +166,17 @@ public class ApodDAO implements DAO<Apod, LocalDate> {
 
     /**
      * Comprueba la existencia de un apod con fecha dada en la base de datos.
-     * @param localDate
-     * @return si existe.
+     *
+     * @param localDate La fecha para la cual se desea comprobar si existe un Apod
+     * @return True si existe si existe, false en caso contrario
      */
     @Override
     public boolean exists(LocalDate localDate) {
         String query = """
-            SELECT count(*)
-                FROM `apods`
-            WHERE `date` = ?
-            """;
+                SELECT count(*)
+                    FROM `apods`
+                WHERE `date` = ?
+                """;
 
         try (PreparedStatement ps = Objects.requireNonNull(SqlService.getConnectionNasa()).prepareStatement(query)) {
             ps.setString(1, localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));

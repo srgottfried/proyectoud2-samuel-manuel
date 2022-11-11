@@ -27,6 +27,13 @@ public abstract class CypherService {
     private static final int SALT_LENGTH_BYTE = 16;
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
 
+    /**
+     * Método para desencriptar la clave de base de datos de un usuario.
+     *
+     * @param data La clave de la base de datos del usuario encriptada
+     * @param password La contraseña de desencriptado del usuario, dada por el login
+     * @return La clave de la base de datos del usuario desencriptada
+     */
     public static String decryptUser(String data, String password) {
         try {
             byte[] decode = Base64.getDecoder().decode(data.getBytes(UTF_8));
@@ -60,6 +67,12 @@ public abstract class CypherService {
         }
     }
 
+    /**
+     * Método para hashear un texto con sha-256.
+     *
+     * @param text Texto a hashear
+     * @return El hash correspondiente al texto
+     */
     public static String hash(String text) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");

@@ -26,9 +26,6 @@ import java.util.function.Predicate;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
-/**
- * Clase que implementa el acceso a datos de NeoDay.
- */
 public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
     private final static Logger logger = LogManager.getLogger();
     private final static NeoDAO neoDAO = new NeoDAO();
@@ -38,9 +35,9 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Obtiene un NeoDay a partir  de una fecha de dada.
-     * @param localDate
-     * @return NeoDay
-     * @throws NoSuchElementException
+     * @param localDate La fecha de la que se desea obtener el NeoDay
+     * @return NeoDay correspondiente a la fecha indicada
+     * @throws NoSuchElementException Si no existe ningún Neo ese dia
      */
     @Override
     public NeoDay get(LocalDate localDate) throws NoSuchElementException {
@@ -49,11 +46,11 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Obtiene lista de NeoDays a partir de un intervalo temporal dado. Admite un predicado para filtrar elementos.
-     * @param dateStart
-     * @param dateEnd
-     * @param predicate
-     * @return Lista de neos
-     * @throws NoSuchElementException
+     * @param dateStart Fecha de inicio para la búsqueda
+     * @param dateEnd Fecha de fin para la búsqueda
+     * @param predicate Filtro a aplicar sobre los Neo
+     * @return Lista de neos que cumplen con las condiciones
+     * @throws NoSuchElementException Si ocurre algún error en el acceso a la DB
      */
     public List<NeoDay> getByLapse(LocalDate dateStart, LocalDate dateEnd, Predicate<Neo> predicate) throws NoSuchElementException {
         int lapse = (int)DAYS.between(dateStart, dateEnd) + 1;
@@ -71,7 +68,7 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Añade NeoDay.
-     * @param neoDay
+     * @param neoDay El NeoDay a añadir
      */
     @Override
     public void add(NeoDay neoDay) {
@@ -80,8 +77,8 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Actualiza NeoDay.
-     * @param neoDay
-     * @throws NoSuchElementException
+     * @param neoDay El NeoDay a actualizar
+     * @throws NoSuchElementException Si el NeoDay indicado no existe
      */
     @Override
     public void update(NeoDay neoDay) throws NoSuchElementException {
@@ -90,8 +87,8 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Borra NeoDay.
-     * @param neoDay
-     * @throws NoSuchElementException
+     * @param neoDay El NeoDay a actualizar
+     * @throws NoSuchElementException Si el NeoDay indicado no existe
      */
     @Override
     public void remove(NeoDay neoDay) throws NoSuchElementException {
@@ -100,7 +97,7 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Comprueba existencia de Neos por fecha.
-     * @param localDate
+     * @param localDate La fecha de la que se quiere comprobar si hay Neos
      * @return si existe.
      */
     @Override
@@ -127,8 +124,8 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Almacena datos en Json.
-     * @param neoDay
-     * @param outfile
+     * @param neoDay El NeoDay a exportar
+     * @param outfile El fichero donde se desea exportar
      */
     public void saveJson(NeoDay neoDay, File outfile) {
         ObjectMapper mapper = new ObjectMapper();
@@ -143,8 +140,8 @@ public class NeoDayDAO implements DAO<NeoDay, LocalDate> {
 
     /**
      * Almacena datos en CSV.
-     * @param neoDay
-     * @param outfile
+     * @param neoDay El NeoDay a exportar
+     * @param outfile El fichero donde se desea exportar
      */
     public void saveCsv(NeoDay neoDay, File outfile) {
         CsvMapper mapper =  new CsvMapper();
